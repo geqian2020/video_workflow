@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>卡通讲解工作台</title><link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <aside>
+    <a class="brand" href="/">讲解工作台<span>VIDEO WORKFLOW</span></a>
+    <button id="new-project" class="primary">＋ 新建讲解</button>
+    <p class="eyebrow">我的项目</p><nav id="projects" aria-label="项目列表"></nav>
+    <p class="aside-note">课件、讲稿与结果保存在本机。<br>选择在线服务时，相关内容会发送给该服务。</p>
+  </aside>
+  <main>
+    <header><div><p class="eyebrow">从课件到视频</p><h1 id="heading">让卡通讲师讲解你的课件</h1></div><span id="status" role="status">准备开始</span></header>
+    <div id="message" role="alert" hidden></div>
+    <section id="start">
+      <p class="intro">导入课件，核对讲稿，选一个角色。先试听一页，再生成完整视频。</p>
+      <div class="tabs" role="tablist"><button id="upload-tab" role="tab" aria-selected="true">上传已有课件</button><button id="generate-tab" role="tab" aria-selected="false">从文案生成 PPT</button></div>
+      <form id="upload-form" class="start-form">
+        <label class="upload-area">选择 PPTX 或 PDF<input id="deck-file" type="file" accept=".pptx,.pdf" required><small>最多 60 页、150 MB。PPTX 保留静态页面，不保留原有动画。</small></label>
+        <button class="primary" type="submit">导入课件</button>
+      </form>
+      <form id="generate-form" class="start-form" hidden>
+        <label>主题或讲解文案<textarea id="topic" rows="8" minlength="10" maxlength="20000" placeholder="填写主题、要点、受众，以及已有资料。生成后仍可修改逐页讲稿。" required></textarea></label>
+        <div class="inline"><label>页数<input id="page-count" type="number" min="2" max="20" value="6"></label><label>标题<input id="topic-title" maxlength="150" value="新的主题讲解"></label></div>
+        <p id="generation-note" class="hint"></p><button id="generate-button" class="primary" type="submit">生成 PPT</button>
+      </form>
+    </section>
+    <section id="workspace" hidden>
+      <div id="warnings" class="hint"></div>
+      <div class="editor-grid">
+        <div class="slides-area"><div id="slide-nav" class="slide-nav" aria-label="页面选择"></div><div class="slide-stage"><img id="slide-image" alt="课件页面预览"></div><p id="slide-number" class="hint"></p></div>
+        <section class="narration-area"><h2>这一页怎么讲</h2><label>页面名称（用于整理）<input id="slide-title" maxlength="300"></label><label>逐页讲稿<textarea id="narration" rows="12" maxlength="8000" placeholder="请填入这一页的讲解内容"></textarea></label>
+          <div class="inline"><button id="save-script">保存讲稿</button><button id="draft-script">AI 起草</button></div>
+          <label>中文配音<select id="voice-engine"><option value="sapi">Windows 离线中文语音</option><option value="edge">在线中文语音</option></select></label>
+          <button id="preview-audio">试听这一页</button><audio id="audio-player" controls hidden></audio>
+          <p class="hint">备注或页面文字只是初稿，请核对数字与专有名词。字幕按实际生成的语句时长排列。</p>
+        </section>
+      </div>
+      <section class="character-section"><div><h2>换一个卡通讲师</h2><p class="hint">上传透明 PNG，点击图片中的嘴巴中心，再调整嘴部宽高。首版提供音量嘴型和轻微身体摆动。</p><input id="avatar-file" type="file" accept="image/png,image/webp,image/jpeg"><div id="avatar-stage" hidden><img id="avatar-image" alt="点击设置角色嘴部中心"><span id="mouth-marker"></span></div></div>
+        <div class="character-settings"><label>嘴部中心 X<input id="mouth-x" type="number" min="0" max="1" step="0.005" value="0.5"></label><label>嘴部中心 Y<input id="mouth-y" type="number" min="0" max="1" step="0.005" value="0.55"></label><label>嘴部宽度<input id="mouth-w" type="number" min="0.01" max="0.6" step="0.005" value="0.12"></label><label>嘴部高度<input id="mouth-h" type="number" min="0.01" max="0.4" step="0.005" value="0.06"></label><button id="save-avatar">保存角色设置</button></div>
+      </section>
+      <section class="export-section"><div><h2>生成讲解视频</h2><p class="hint">角色在课件旁边，字幕位于下方。修改讲稿后，旧视频会标记为需要更新。</p></div><div class="inline"><button id="render-page">生成本页视频</button><button id="render-all" class="primary">导出完整视频</button><button id="retry-import" hidden>重试导入</button></div></section>
+      <div id="downloads" class="downloads"></div><div id="result" hidden><p id="result-label"></p><video id="video-player" controls preload="metadata"></video></div>
+    </section>
+  </main><script src="/static/app.js"></script>
+</body></html>
